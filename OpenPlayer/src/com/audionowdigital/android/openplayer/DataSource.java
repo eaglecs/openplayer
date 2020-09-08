@@ -218,7 +218,9 @@ public class DataSource  {
 		}
 		
 		if (dataSource == DATA_SRC_REMOTE) {
-			inputStream = getRemote(dataPath, offset);
+			if(!dataPath.isEmpty()){
+				inputStream = getRemote(dataPath, offset);
+			}
 			if (inputStream != null) {
 				Log.d(TAG, "Skip reconnect to:" + offset);
 				dataSource = DATA_SRC_REMOTE;

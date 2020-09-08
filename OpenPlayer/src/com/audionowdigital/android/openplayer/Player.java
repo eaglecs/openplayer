@@ -110,6 +110,7 @@ public class Player implements Runnable {
         // set an input stream as data source
         this.streamSecondsLength = streamSecondsLength;
         decodeFeed.setData(inputStream, streamSecondsLength);
+        new Thread(this).start();
     }
 
 

@@ -1,6 +1,9 @@
 package com.audionowdigital.android.openplayerdemo;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +18,8 @@ import android.widget.TextView;
 import com.audionowdigital.android.openplayer.Player;
 import com.audionowdigital.android.openplayer.Player.DecoderType;
 import com.audionowdigital.android.openplayer.PlayerEvents;
+
+import java.util.ArrayList;
 
 
 // This activity demonstrates how to use JNI to encode and decode ogg/vorbis audio
@@ -40,7 +45,7 @@ public class MainActivity extends Activity {
 
     private SeekBar seekBar;
 
-    private Player.DecoderType type = DecoderType.OPUS;
+    private Player.DecoderType type = DecoderType.VORBIS;
 
     private Player player;
 
@@ -56,9 +61,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         initUi();
 
+        testOgg();
+
         switch (type) {
             case VORBIS: //urlArea.setText("http://icecast1.pulsradio.com:80/mxHD.ogg"); LENGTH = -1; break;
-                urlArea.setText("http://markosoft.ro/test.ogg");
+                urlArea.setText("https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_1MG.ogg");
                 LENGTH = 215;
                 break;
             case OPUS:
@@ -86,6 +93,7 @@ public class MainActivity extends Activity {
                         break;
                     case PlayerEvents.READY_TO_PLAY:
                         logArea.setText("READY to play - press play :)");
+                        player.play();
                         break;
                     case PlayerEvents.PLAY_UPDATE:
                         logArea.setText("Playing:" + (msg.arg1 / 60) + ":" + (msg.arg1 % 60) + " (" + (msg.arg1) + "s)");
@@ -105,6 +113,24 @@ public class MainActivity extends Activity {
 
     }
 
+    private void testOgg() {
+
+    }
+
+    private boolean checkIfAlreadyhavePermission() {
+        int result = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            result = checkSelfPermission(Manifest.permission.RECORD_AUDIO);
+            if (result == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
     private void initUi(){
         logArea = (TextView) findViewById(R.id.log_area);
         urlArea = (EditText) findViewById(R.id.url_area);
@@ -121,7 +147,7 @@ public class MainActivity extends Activity {
                 logArea.setText("");
                 switch (type) {
                     case VORBIS:
-                        player.setDataSource("/sdcard/countdown.ogg", 11);
+                        player.setDataSource("/data/user/0/com.olli.omni.demo/test6712552759787625685.ogg", 11);
                         break;
                     case OPUS:
                         player.setDataSource("/sdcard/countdown.opus", 11);
@@ -141,11 +167,20 @@ public class MainActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        player.setDataSource(urlArea.getEditableText().toString(), LENGTH);
+                        if (checkIfAlreadyhavePermission()) {
+                            player.setDataSource(urlArea.getEditableText().toString(), LENGTH);
+                        }else  {
+                            String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO};
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                requestPermissions(permissions, 100);
+                            }
+                        }
                     }
                 }).start();
             }
         });
+
+
 
         play.setOnClickListener(new OnClickListener() {
             @Override
