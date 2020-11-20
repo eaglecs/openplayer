@@ -173,7 +173,7 @@ public class DataSource  {
 				if (bytes > 0) readoffset += bytes;
                 //Log.d(TAG, "readoffset:" + readoffset)
                 if (bytes == -1)
-                    return DATA_SRC_FINISHED;
+                    return 0;
                 else
 				    return bytes;
 			}
