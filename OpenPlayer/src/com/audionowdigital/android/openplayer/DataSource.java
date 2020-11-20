@@ -170,7 +170,7 @@ public class DataSource  {
                 // Returns the number of bytes actually read or -1 if the end of the stream has been reached.
                 // if the stream is closed or another IOException occurs.
 				byte bufferTest [] = new byte[4096];
-				int bytes = inputStream.read(bufferTest);
+				int bytes = inputStream.read(buffer);
 				Log.d("duc_anh", "Stream size ="+bytes);
 
 				if (bytes > 0) readoffset += bytes;
