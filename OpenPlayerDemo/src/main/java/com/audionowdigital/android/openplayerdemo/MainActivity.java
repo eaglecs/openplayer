@@ -65,7 +65,9 @@ public class MainActivity extends Activity {
 
         switch (type) {
             case VORBIS: //urlArea.setText("http://icecast1.pulsradio.com:80/mxHD.ogg"); LENGTH = -1; break;
-                urlArea.setText("https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_1MG.ogg");
+//                urlArea.setText("https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_1MG.ogg");
+                urlArea.setText("http://commondatastorage.googleapis.com/codeskulptor-assets/Evillaugh.ogg");
+//                urlArea.setText("http://commondatastorage.googleapis.com/codeskulptor-demos/pyman_assets/extralife.ogg");
                 LENGTH = 215;
                 break;
             case OPUS:
@@ -73,7 +75,7 @@ public class MainActivity extends Activity {
                 LENGTH = 154;
                 break;
             case MX:
-                urlArea.setText("http://stream.rfi.fr/rfimonde/all/rfimonde-64k.mp3");
+                urlArea.setText("https://storage.googleapis.com/nfree/hello1605860308.mp3");
                 LENGTH = -1;
                 break;
         }
