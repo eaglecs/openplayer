@@ -169,7 +169,10 @@ public class DataSource  {
                 // Reads up to byteCount bytes from this stream and stores them in the byte array buffer starting at byteOffset.
                 // Returns the number of bytes actually read or -1 if the end of the stream has been reached.
                 // if the stream is closed or another IOException occurs.
-				int bytes = inputStream.read(buffer);
+				byte bufferTest [] = new byte[16384];
+				int bytes = inputStream.read(bufferTest);
+				Log.d("duc_anh", "Stream size ="+bytes);
+
 				if (bytes > 0) readoffset += bytes;
                 //Log.d(TAG, "readoffset:" + readoffset)
                 if (bytes == -1)
