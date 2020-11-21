@@ -73,7 +73,7 @@ public class Player implements Runnable {
     	 Log.e(TAG, "preparing to init:"+type);
     	 switch (type) {
     		 case OPUS: OpusDecoder.initJni(1); break;
-    		 case VORBIS: VorbisDecoder.initJni(1); break;
+    		 case VORBIS: VorbisDecoder.initJni(0); break;
     		 case MX: MXDecoder.init(1); break;
 		default:
 			break;
