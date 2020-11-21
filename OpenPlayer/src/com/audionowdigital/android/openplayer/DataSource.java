@@ -9,6 +9,7 @@
 package com.audionowdigital.android.openplayer;
 
 import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -169,15 +170,16 @@ public class DataSource  {
                 // Reads up to byteCount bytes from this stream and stores them in the byte array buffer starting at byteOffset.
                 // Returns the number of bytes actually read or -1 if the end of the stream has been reached.
                 // if the stream is closed or another IOException occurs.
-				byte bufferTest [] = new byte[4096];
 				int bytes = inputStream.read(buffer);
 				Log.d("duc_anh", "Stream size ="+bytes);
 
 				if (bytes > 0) readoffset += bytes;
                 //Log.d(TAG, "readoffset:" + readoffset)
-                if (bytes == -1)
-                    return DATA_SRC_FINISHED;
-                else
+                if (bytes == -1) {
+                	return buffer.length;
+//					return DATA_SRC_FINISHED;
+				}
+
 				    return bytes;
 			}
 		} catch (IOException e) {
