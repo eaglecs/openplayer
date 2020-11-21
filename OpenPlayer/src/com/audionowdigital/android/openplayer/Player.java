@@ -169,7 +169,7 @@ public class Player implements Runnable {
     	if (type == DecoderType.MX)
     		MXDecoder.stop();
     	
-    	decodeFeed.onStop();
+//    	decodeFeed.onStop();
         // make sure the thread gets unlocked
     	decodeFeed.syncNotify();
     }
