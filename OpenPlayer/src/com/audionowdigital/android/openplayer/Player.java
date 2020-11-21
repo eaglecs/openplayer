@@ -127,10 +127,10 @@ public class Player implements Runnable {
     }
 
     public void play() {
-        if (playerState.get() == PlayerStates.READING_HEADER){
-            stop();
-            return;
-        }
+//        if (playerState.get() == PlayerStates.READING_HEADER){
+//            stop();
+//            return;
+//        }
         if (playerState.get() == PlayerStates.STOPPED){
             return;
         }
