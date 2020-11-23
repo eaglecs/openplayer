@@ -238,21 +238,21 @@ JNIEXPORT int JNICALL Java_org_xiph_vorbis_decoderjni_VorbisDecoder_readDecodeWr
 
 				// check stream end
 				if (ogg_page_eos(&og)) {
-					LOGE(LOG_TAG, "Stream finished.");
-					// clean up this logical bitstream;
-					ogg_stream_clear(&os);
-					vorbis_comment_clear(&vc);
-					vorbis_info_clear(&vi);  // must be called last
-
-					// clear decoding structures
-					vorbis_block_clear(&vb);
-					vorbis_dsp_clear(&vd);
-
-					// attempt to go for re-initialization until EOF in data source
-					err = SUCCESS;
-
-					inited = 0;
-					break;
+					LOGE(LOG_TAG, "Stream finished.....");
+//					// clean up this logical bitstream;
+//					ogg_stream_clear(&os);
+//					vorbis_comment_clear(&vc);
+//					vorbis_info_clear(&vi);  // must be called last
+//
+//					// clear decoding structures
+//					vorbis_block_clear(&vb);
+//					vorbis_dsp_clear(&vd);
+//
+//					// attempt to go for re-initialization until EOF in data source
+//					err = SUCCESS;
+//
+//					inited = 0;
+//					break;
 				}
 			}
         	// page if

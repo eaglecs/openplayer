@@ -13,13 +13,19 @@ android {
         targetSdkVersion 26
     }
 
+    externalNativeBuild {
+        cmake {
+            path "src/CMakeLists.txt"
+        }
+    }
+
 	sourceSets {
     		main {
         		manifest.srcFile 'AndroidManifest.xml'
         		java.srcDirs = ['src']
         		res.srcDirs = ['res']
-			jni.srcDirs = []
-			jniLibs.srcDirs = ['libs']
+//			jni.srcDirs = []
+////			jniLibs.srcDirs = ['libs']
     		}
 	}
 }

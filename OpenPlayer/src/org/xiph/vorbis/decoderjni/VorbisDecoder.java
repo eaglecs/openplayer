@@ -20,8 +20,8 @@ public class VorbisDecoder {
      * Load our vorbis-jni library and other dependent libraries
      */
     static {
-        System.loadLibrary("ogg");
-        System.loadLibrary("vorbis");
+//        System.loadLibrary("ogg");
+//        System.loadLibrary("vorbis");
         System.loadLibrary("vorbis-jni");
     }
     
