@@ -311,11 +311,12 @@ public class ImplDecodeFeed implements DecodeFeed {
     public void stopAudioTrack() {
         //Stop the audio track
         if (audioTrack != null) {
-            LogDebug.d(TAG, "Audiotrack flush");
-
+            LogDebug.d(TAG, "stopAudioTrack");
             try {
                 audioTrack.flush();
                 audioTrack.stop();
+                audioTrack.release();
+                LogDebug.d(TAG, "audioTrack release");
             } catch (Exception ex) {
                 LogDebug.e(TAG, "Audiotrack stop ex:"+ex.getMessage());
             }
@@ -401,8 +402,10 @@ public class ImplDecodeFeed implements DecodeFeed {
         if (minSize < 8 * 1024) minSize = 8 * 1024;
 
         try {
+            LogDebug.d(TAG, "audioTrack create");
             audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, (int) decodeStreamInfo.getSampleRate(), channelConfiguration,
                     AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
+            LogDebug.d(TAG, "audioTrack create success");
             audioTrack.play();
             visualizer = new Visualizer(audioTrack.getAudioSessionId());
             visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
