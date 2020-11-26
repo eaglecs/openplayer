@@ -138,11 +138,6 @@ public class ImplDecodeFeed implements DecodeFeed {
 
     public void setData(InputStream inputStream, long streamSecondsLength) {
         lastError = ERR_SUCCESS;
-
-        if (inputStream == null) {
-            lastError = ERR_DATASOURCE;
-            throw new IllegalArgumentException("Path to decode must not be null.");
-        }
         this.streamSecondsLength = streamSecondsLength;
 
 
@@ -211,7 +206,7 @@ public class ImplDecodeFeed implements DecodeFeed {
         //Otherwise read from the file
         try {
             int read = data.read(buffer, 0, amountToWrite);
-
+            Log.d("duc_anh_", "onReadEncodedData read = " + read);
 
             if (read == -1) {
                 Log.d(TAG, "Data read exception");
@@ -223,7 +218,7 @@ public class ImplDecodeFeed implements DecodeFeed {
                 Log.d(TAG, "Data read end of stream");
             }
 
-            return (read <= 0)? 0 : read;
+            return Math.max(read, 0);
         } catch (Exception e) {
             //There was a problem reading from the file
             Log.e(TAG, "Failed to read encoded data from file, abort. Total:" + streamSecondsLength + " written:" + writtenMiliSeconds, e);
@@ -276,6 +271,7 @@ public class ImplDecodeFeed implements DecodeFeed {
     @Override
     public void onWritePCMData(short[] pcmData, int amountToRead, int currentSeconds) {
     	//Log.e(TAG, "currentSeconds:"+currentSeconds);
+        Log.d("duc_anh_", "onWritePCMData amountToRead = " + amountToRead+ " ;currentSeconds = " + currentSeconds);
     	waitPlay();
 			
         //If we received data and are playing, write to the audio track
@@ -305,7 +301,7 @@ public class ImplDecodeFeed implements DecodeFeed {
             events.sendEvent(PlayerEvents.PLAY_UPDATE, (int) (writtenMiliSeconds / 1000));
             
             // at this point we know all stream parameters, including the sampleRate, use it to compute current time.
-            //Log.e(TAG, "sample rate: " + streamInfo.getSampleRate() + " " + streamInfo.getChannels() + " " + streamInfo.getVendor() +  " time:" + writtenMiliSeconds + " bytes:" + writtenPCMData);
+//            Log.e(TAG, "sample rate: " + streamInfo.getSampleRate() + " " + streamInfo.getChannels() + " " + streamInfo.getVendor() +  " time:" + writtenMiliSeconds + " bytes:" + writtenPCMData);
         
         } else {
             Log.e("DataSource", "audio track error");

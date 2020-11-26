@@ -31,8 +31,20 @@ public class PlayerStates {
     	return playerState;
     }
     
-    public void set(int state) { 
-    	Log.e("PlayerStates", "new state:"+state);
+    public void set(int state) {
+        String stateStr = "";
+        if (state == 0){
+            stateStr = "READY_TO_PLAY" ;
+        } else  if (state ==1){
+            stateStr = "PLAYING" ;
+        } else if (state ==2){
+            stateStr = "STOPPED" ;
+        } else if (state == 3){
+            stateStr = "READING_HEADER" ;
+        } else {
+            stateStr = "other" ;
+        }
+    	Log.e("PlayerStates", "new state:"+stateStr);
     	playerState = state;
     }
     

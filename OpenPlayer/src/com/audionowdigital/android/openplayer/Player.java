@@ -104,13 +104,15 @@ public class Player implements Runnable {
 
     public void setDataSource(InputStream inputStream, long streamSecondsLength){
         if (playerState.get() != PlayerStates.STOPPED) {
-            throw new IllegalStateException("Must be stopped to change source!");
+            playerState.set(PlayerStates.STOPPED);
+//            throw new IllegalStateException("Must be stopped to change source!");
+        } else {
+            Log.d(TAG, "setDataSource: given length:" + streamSecondsLength);
+            // set an input stream as data source
+            this.streamSecondsLength = streamSecondsLength;
+            decodeFeed.setData(inputStream, streamSecondsLength);
+            new Thread(this).start();
         }
-        Log.d(TAG, "setDataSource: given length:" + streamSecondsLength);
-        // set an input stream as data source
-        this.streamSecondsLength = streamSecondsLength;
-        decodeFeed.setData(inputStream, streamSecondsLength);
-        new Thread(this).start();
     }
 
 
@@ -127,11 +129,14 @@ public class Player implements Runnable {
     }
 
     public void play() {
+        Log.d("duc_anh","play.....");
         if (playerState.get() == PlayerStates.READING_HEADER){
+            Log.d("duc_anh","PlayerStates == READING_HEADER");
             stop();
             return;
         }
         if (playerState.get() == PlayerStates.STOPPED){
+            Log.d("duc_anh","PlayerStates == STOPPED");
             return;
         }
     	if (playerState.get() != PlayerStates.READY_TO_PLAY) {
@@ -144,6 +149,7 @@ public class Player implements Runnable {
     
     public void pause() {
         if (playerState.get() == PlayerStates.READING_HEADER){
+            Log.d("duc_anh","PlayerStates == READING_HEADER");
             stop();
             return;
         }

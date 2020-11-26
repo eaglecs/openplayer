@@ -3,6 +3,8 @@ package com.audionowdigital.android.openplayerdemo;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +21,21 @@ import com.audionowdigital.android.openplayer.Player;
 import com.audionowdigital.android.openplayer.Player.DecoderType;
 import com.audionowdigital.android.openplayer.PlayerEvents;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DefaultObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import com.audionowdigital.android.openplayerdemo.ServiceImpl;
 
 
 // This activity demonstrates how to use JNI to encode and decode ogg/vorbis audio
@@ -61,13 +77,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         initUi();
 
-        testOgg();
+//        testOgg();
 
         switch (type) {
             case VORBIS: //urlArea.setText("http://icecast1.pulsradio.com:80/mxHD.ogg"); LENGTH = -1; break;
 //                urlArea.setText("https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_1MG.ogg");
                 urlArea.setText("http://commondatastorage.googleapis.com/codeskulptor-assets/Evillaugh.ogg");
-//                urlArea.setText("http://commondatastorage.googleapis.com/codeskulptor-demos/pyman_assets/extralife.ogg");
                 LENGTH = 215;
                 break;
             case OPUS:
@@ -115,8 +130,63 @@ public class MainActivity extends Activity {
 
     }
 
-    private void testOgg() {
 
+    private void testOgg() {
+        Observable<ResponseBody> observable = ServiceImpl.Companion.streamChat()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        observable.subscribeWith(getObserver());
+    }
+
+
+    private Observer<ResponseBody> getObserver() {
+        return new Observer<ResponseBody>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.d(TAG, "onSubscribe");
+            }
+
+            @Override
+            public void onNext(ResponseBody s) {
+                if ( player != null) {
+                    player.stop();
+                }
+                player.setDataSource(s.byteStream(), -1);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "All items are emitted!");
+            }
+        };
+    }
+
+    private void playLocalFile(InputStream inputStream) {
+        try {
+            File file = File.createTempFile("test",".ogg",getFilesDir());
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            byte [] buffer = new byte[16384];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1){
+                fileOutputStream.write(buffer, 0, length);
+            }
+            fileOutputStream.close();
+            MediaPlayer mp = new MediaPlayer();
+            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            mp.setDataSource(fileInputStream.getFD());
+            mp.prepare();
+            mp.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean checkIfAlreadyhavePermission() {
@@ -170,7 +240,8 @@ public class MainActivity extends Activity {
                     @Override
                     public void run() {
                         if (checkIfAlreadyhavePermission()) {
-                            player.setDataSource(urlArea.getEditableText().toString(), LENGTH);
+//                            player.setDataSource(urlArea.getEditableText().toString(), LENGTH);
+                            testOgg();
                         }else  {
                             String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO};
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

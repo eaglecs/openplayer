@@ -28,6 +28,14 @@ android {
 ////			jniLibs.srcDirs = ['libs']
     		}
 	}
+
+//    packagingOptions {
+//        pickFirst '**/*.so'
+//    }
+}
+
+dependencies {
+    implementation "com.squareup.okhttp3:okhttp:4.8.1"
 }
 
 //sourceSets.main.jni.srcDirs = []
