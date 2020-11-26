@@ -8,11 +8,18 @@ object LogDebug {
         if (BuildConfig.DEBUG){
             Log.d("duc_anh", "$tag $msg" )
         }
+        else {
+            Log.d("duc_anh", "$tag $msg" )
+        }
     }
 
     @JvmStatic
     fun e(tag: String = "",msg: String){
         if (BuildConfig.DEBUG){
+            Log.e("duc_anh", "$tag $msg")
+        }
+
+        else {
             Log.e("duc_anh", "$tag $msg")
         }
     }
