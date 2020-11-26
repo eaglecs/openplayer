@@ -345,9 +345,8 @@ public class ImplDecodeFeed implements DecodeFeed {
             writtenMiliSeconds = 0;
 
             LogDebug.d(TAG, "decoding complete");
-            
-            stopAudioTrack();
         }
+        stopAudioTrack();
         //Set our state to stopped
         playerState.set(PlayerStates.STOPPED);
     }
