@@ -13,9 +13,9 @@ package net.pocketmagic.android.openmxplayer;
 import android.media.MediaCodec;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
-import android.util.Log;
 
 import com.audionowdigital.android.openplayer.DecodeFeed;
+import com.audionowdigital.android.openplayer.LogDebug;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -61,7 +61,7 @@ public class MXDecoder {
 		
 		//InputStream is = decodeFeed.getDataSource().getInputStream();
 		String srcPath = decodeFeed.getDataSource().getPath();
-		Log.d(TAG, "readDecodeWriteLoop call for src:" + srcPath);
+        LogDebug.d(TAG, "readDecodeWriteLoop call for src:" + srcPath);
 		
 		// open source and read type / header
 		// extractor gets information about the stream
@@ -71,7 +71,7 @@ public class MXDecoder {
         try {
 			extractor.setDataSource(srcPath);
 		} catch (Exception e) {
-			Log.e(TAG, "exception: "+e.getMessage());
+            LogDebug.e(TAG, "exception: "+e.getMessage());
 			decodeFeed.onStop();
 			return INVALID_HEADER;
 		}
@@ -87,14 +87,14 @@ public class MXDecoder {
 			duration = format.getLong(MediaFormat.KEY_DURATION);
 			bitrate = format.getInteger(MediaFormat.KEY_BIT_RATE);
         } catch (Exception e) {
-			Log.e(TAG, "Reading format parameters exception:"+e.getMessage());
+            LogDebug.e(TAG, "Reading format parameters exception:"+e.getMessage());
 			// don't exit, tolerate this error, we'll fail later if this is critical
 		}
-        Log.d(TAG, "Track info: mime:" + mime + " sampleRate:" + sampleRate + " channels:" + channels + " bitrate:" + bitrate + " duration:" + duration);
+        LogDebug.d(TAG, "Track info: mime:" + mime + " sampleRate:" + sampleRate + " channels:" + channels + " bitrate:" + bitrate + " duration:" + duration);
        
         // check we have audio content we know
         if (format == null || !mime.startsWith("audio/")) {
-        	Log.e(TAG, "Invalid mime:" + mime);
+            LogDebug.e(TAG, "Invalid mime:" + mime);
         	decodeFeed.onStop();
 			return INVALID_HEADER;
         }
@@ -107,7 +107,7 @@ public class MXDecoder {
         }
         // check we have a valid codec instance
         if (codec == null) {
-        	Log.e(TAG, "Can't start codec for mime:" + mime);
+            LogDebug.e(TAG, "Can't start codec for mime:" + mime);
         	decodeFeed.onStop();
 			return INVALID_HEADER;
         }
@@ -150,7 +150,7 @@ public class MXDecoder {
                     ByteBuffer dstBuf = codecInputBuffers[inputBufIndex];
                     int sampleSize = extractor.readSampleData(dstBuf, 0);
                     if (sampleSize < 0) {
-                        Log.d(TAG, "saw input EOS. Stopping playback");
+                        LogDebug.d(TAG, "saw input EOS. Stopping playback");
                         sawInputEOS = true;
                         sampleSize = 0;
                     } else {
@@ -163,7 +163,7 @@ public class MXDecoder {
                     if (!sawInputEOS) extractor.advance();
                     
                 } else {
-                	Log.e(TAG, "inputBufIndex " +inputBufIndex);
+                    LogDebug.e(TAG, "inputBufIndex " +inputBufIndex);
                 }
             } // !sawInputEOS
 
@@ -192,25 +192,25 @@ public class MXDecoder {
                 codec.releaseOutputBuffer(outputBufIndex, false);
 
                 if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-                    Log.d(TAG, "saw output EOS.");
+                    LogDebug.d(TAG, "saw output EOS.");
                     sawOutputEOS = true;
                 }
             } else if (res == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED) {
                 codecOutputBuffers = codec.getOutputBuffers();
-                Log.d(TAG, "output buffers have changed.");
+                LogDebug.d(TAG, "output buffers have changed.");
             } else if (res == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                 MediaFormat oformat = codec.getOutputFormat();
-                Log.d(TAG, "output format has changed to " + oformat);
+                LogDebug.d(TAG, "output format has changed to " + oformat);
             } else {
-                Log.d(TAG, "dequeueOutputBuffer returned " + res);
+                LogDebug.d(TAG, "dequeueOutputBuffer returned " + res);
             }
         }
-        
-        Log.d(TAG, "stopping...");
+
+        LogDebug.d(TAG, "stopping...");
 
         //codec.
         if(codec != null) {
-        	Log.d(TAG, "Release codec");
+            LogDebug.d(TAG, "Release codec");
         	
 			codec.stop();
 			codec.release();
@@ -226,15 +226,15 @@ public class MXDecoder {
         // duration 0 for live stream
 
         // for recording daemon's dance: duration:30834100 presentationTimeUs:30798367
-        Log.e(TAG, "duration:" + duration + " presentationTimeUs:" + presentationTimeUs );
+        LogDebug.e(TAG, "duration:" + duration + " presentationTimeUs:" + presentationTimeUs );
 
         // 1 sec tolerance
         if(presentationTimeUs + 1000000 < duration) {
-            Log.d(TAG, "readDecodeWriteLoop stopped with error.");
+            LogDebug.d(TAG, "readDecodeWriteLoop stopped with error.");
             err = DecodeFeed.DECODE_ERROR;
             //decodeFeed.onError();
         } else {
-            Log.d(TAG, "readDecodeWriteLoop stopped.");
+            LogDebug.d(TAG, "readDecodeWriteLoop stopped.");
         }
 
 

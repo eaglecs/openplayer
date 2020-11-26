@@ -10,7 +10,6 @@ package com.audionowdigital.android.openplayer;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -18,20 +17,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Collections;
 
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionSpec;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.TlsVersion;
 
 /**
  * Created by radhoo on /14.
@@ -56,7 +49,7 @@ public class DataSource {
     private long length = -1, readoffset = -1;
 
 	private InputStream getRemote(String url, long offset) {
-        Log.d(TAG, "getRemote:" + url);
+        LogDebug.d(TAG, "getRemote:" + url);
 
 		try {
 			URLConnection cn = new URL( url ).openConnection();
@@ -94,7 +87,7 @@ public class DataSource {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private InputStream getRemoteMaika(String url) {
-        Log.d(TAG, "getRemote:" + url);
+        LogDebug.d(TAG, "getRemote:" + url);
 
 //        try {
         OkHttpClient client = new OkHttpClient();
@@ -132,7 +125,7 @@ public class DataSource {
             Response response = client.newCall(request).execute();
             return response.body().byteStream();
         } catch (IOException e) {
-            Log.e("", e.getMessage());
+            LogDebug.e("", e.getMessage());
         }
 
 //            HttpURLConnection cn = (HttpURLConnection) new URL("https://staging.chatbot.iviet.com/stream").openConnection();
@@ -211,14 +204,14 @@ public class DataSource {
         // first see if it's a local path
         inputStream = getLocal(path);
         if (inputStream != null) {
-            Log.d(TAG, "Local Source length:" + length);
+            LogDebug.d(TAG, "Local Source length:" + length);
             dataSource = DATA_SRC_LOCAL;
             return;
         }
 
         inputStream = getRemote(path, 0);
         if (inputStream != null) {
-            Log.d(TAG, "Remote Source length:" + length);
+            LogDebug.d(TAG, "Remote Source length:" + length);
             dataSource = DATA_SRC_REMOTE;
             return;
         }
@@ -228,18 +221,18 @@ public class DataSource {
     DataSource(InputStream input) {
         dataSource = DATA_SRC_INVALID;
         inputStream = null;
-        Log.d(TAG, "Remote Source length:" + length);
+        LogDebug.d(TAG, "Remote Source length:" + length);
         this.inputStream = input;
         dataSource = DATA_SRC_REMOTE;
 
     }
 
     public void release() {
-        Log.d(TAG, "release called.");
+        LogDebug.d(TAG, "release called.");
         try {
             inputStream.close();
         } catch (Exception e) {
-            Log.d(TAG, "source already released");
+            LogDebug.d(TAG, "source already released");
         }
         inputStream = null;
         dataSource = DATA_SRC_INVALID;
@@ -271,7 +264,7 @@ public class DataSource {
                 // Returns the number of bytes actually read or -1 if the end of the stream has been reached.
                 // if the stream is closed or another IOException occurs.
                 int bytes = inputStream.read(buffer, byteOffset, byteCount);
-                Log.d("Stream size = ","" + bytes);
+                LogDebug.d("Stream size = ","" + bytes);
                 if (bytes > 0) readoffset += bytes;
                 //Log.d(TAG, "readoffset:" + readoffset)
                 if (bytes == -1)
@@ -280,7 +273,7 @@ public class DataSource {
                     return bytes;
             }
         } catch (IOException e) {
-            Log.d(TAG, "InputStream exception:" + e.getMessage());
+            LogDebug.d(TAG, "InputStream exception:" + e.getMessage());
             e.printStackTrace();
         }
 
@@ -309,7 +302,7 @@ public class DataSource {
 
                     skip = inputStream.skip(offset);
                     retry--;
-                    Log.e("SKIP", "res skip:" + skip + " retry:" + retry);
+                    LogDebug.e("SKIP", "res skip:" + skip + " retry:" + retry);
                 } while (Math.abs(skip - offset) > 4096 && retry > 0);
 
                 readoffset = offset;
@@ -324,7 +317,7 @@ public class DataSource {
                 inputStream = getRemote(dataPath, offset);
             }
             if (inputStream != null) {
-                Log.d(TAG, "Skip reconnect to:" + offset);
+                LogDebug.d(TAG, "Skip reconnect to:" + offset);
                 dataSource = DATA_SRC_REMOTE;
             }
         }

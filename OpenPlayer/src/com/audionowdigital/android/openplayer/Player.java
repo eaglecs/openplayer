@@ -10,7 +10,6 @@ package com.audionowdigital.android.openplayer;
 
 import android.os.Handler;
 import android.os.Process;
-import android.util.Log;
 
 import net.pocketmagic.android.openmxplayer.MXDecoder;
 
@@ -66,11 +65,11 @@ public class Player implements Runnable {
     	 
     	 
     	 // pass the DecodeFeed interface to the native JNI layer, we will get all calls there
-    	 Log.d(TAG,"Player constructor, type:"+type);
+        LogDebug.d(TAG,"Player constructor, type:"+type);
     	/* switch (type) {
     	 case DecoderType.OPUS: 
     	 }*/
-    	 Log.e(TAG, "preparing to init:"+type);
+        LogDebug.e(TAG, "preparing to init:"+type);
     	 switch (type) {
     		 case OPUS: OpusDecoder.initJni(1); break;
     		 case VORBIS: VorbisDecoder.initJni(1); break;
@@ -83,7 +82,7 @@ public class Player implements Runnable {
 
     public void stopAudioTrack(){
         decodeFeed.stopAudioTrack();
-        Log.d("Player_Status", "stop audio track");
+        LogDebug.d("Player_Status", "stop audio track");
 
     }
 
@@ -94,7 +93,7 @@ public class Player implements Runnable {
     	if (playerState.get() != PlayerStates.STOPPED) {
             throw new IllegalStateException("Must be stopped to change source!");
         }
-    	Log.d(TAG, "setDataSource: given length:" + streamSecondsLength);
+        LogDebug.d(TAG, "setDataSource: given length:" + streamSecondsLength);
     	// set an input stream as data source
     	this.streamSecondsLength = streamSecondsLength;
     	decodeFeed.setData(path, streamSecondsLength);
@@ -107,7 +106,7 @@ public class Player implements Runnable {
             playerState.set(PlayerStates.STOPPED);
 //            throw new IllegalStateException("Must be stopped to change source!");
         } else {
-            Log.d(TAG, "setDataSource: given length:" + streamSecondsLength);
+            LogDebug.d(TAG, "setDataSource: given length:" + streamSecondsLength);
             // set an input stream as data source
             this.streamSecondsLength = streamSecondsLength;
             decodeFeed.setData(inputStream, streamSecondsLength);
@@ -129,14 +128,14 @@ public class Player implements Runnable {
     }
 
     public void play() {
-        Log.d("duc_anh","play.....");
+        LogDebug.d("duc_anh","play.....");
         if (playerState.get() == PlayerStates.READING_HEADER){
-            Log.d("duc_anh","PlayerStates == READING_HEADER");
+            LogDebug.d("duc_anh","PlayerStates == READING_HEADER");
             stop();
             return;
         }
         if (playerState.get() == PlayerStates.STOPPED){
-            Log.d("duc_anh","PlayerStates == STOPPED");
+            LogDebug.d("duc_anh","PlayerStates == STOPPED");
             return;
         }
     	if (playerState.get() != PlayerStates.READY_TO_PLAY) {
@@ -149,7 +148,7 @@ public class Player implements Runnable {
     
     public void pause() {
         if (playerState.get() == PlayerStates.READING_HEADER){
-            Log.d("duc_anh","PlayerStates == READING_HEADER");
+            LogDebug.d("duc_anh","PlayerStates == READING_HEADER");
             stop();
             return;
         }
@@ -183,22 +182,22 @@ public class Player implements Runnable {
 
     @Override
     public void run() {
-    	Log.e(TAG, "Start the native decoder");
+        LogDebug.e(TAG, "Start the native decoder");
         
         android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
         
         int result = 0;
         switch (type) {
         	case OPUS:
-        		Log.e(TAG, "call opus readwrite loop");
+                LogDebug.e(TAG, "call opus readwrite loop");
         		result = OpusDecoder.readDecodeWriteLoop(decodeFeed);
         	break;
         	case VORBIS:
-        		Log.e(TAG, "call vorbis readwrite loop");
+                LogDebug.e(TAG, "call vorbis readwrite loop");
         		result = VorbisDecoder.readDecodeWriteLoop(decodeFeed);
         	break;
         	case MX:
-        		Log.e(TAG, "call mx readwrite loop");
+                LogDebug.e(TAG, "call mx readwrite loop");
         		result = MXDecoder.readDecodeWriteLoop(decodeFeed);
         	break;
         }
@@ -213,7 +212,7 @@ public class Player implements Runnable {
         }*/
         // check for unexpected end:
         if (decodeFeed.getLastError() != decodeFeed.ERR_SUCCESS) {
-            Log.d(TAG, "Result: Ended unexpectedly:" + decodeFeed.getLastError());
+            LogDebug.d(TAG, "Result: Ended unexpectedly:" + decodeFeed.getLastError());
             events.sendEvent(PlayerEvents.PLAYING_FAILED);
             return;
         }
@@ -221,15 +220,15 @@ public class Player implements Runnable {
 
         switch (result) {
             case DecodeFeed.SUCCESS:
-                Log.d(TAG, "Result: Normal: Successfully finished decoding");
+                LogDebug.d(TAG, "Result: Normal: Successfully finished decoding");
                 events.sendEvent(PlayerEvents.PLAYING_FINISHED);
                 break;
             case DecodeFeed.INVALID_HEADER:
-                Log.e(TAG, "Result: Normal: Invalid header error received");
+                LogDebug.e(TAG, "Result: Normal: Invalid header error received");
                 events.sendEvent(PlayerEvents.PLAYING_FAILED);
                 break;
             case DecodeFeed.DECODE_ERROR:
-                Log.e(TAG, "Result: Normal: Finished decoding with error");
+                LogDebug.e(TAG, "Result: Normal: Finished decoding with error");
                 events.sendEvent(PlayerEvents.PLAYING_FAILED);
                 break;
         }

@@ -124,7 +124,7 @@ public class ImplDecodeFeed implements DecodeFeed {
        /* if (!(streamToDecode instanceof BufferedInputStream) && streamSize > 0) {
             this.inputStream = new BufferedInputStream(streamToDecode);
         } else {*/
-        Log.d(TAG, "Creating a new data source obj");
+        LogDebug.d(TAG, "Creating a new data source obj");
         data = new DataSource(path);
 
         if (!data.isSourceValid())
@@ -145,7 +145,7 @@ public class ImplDecodeFeed implements DecodeFeed {
        /* if (!(streamToDecode instanceof BufferedInputStream) && streamSize > 0) {
             this.inputStream = new BufferedInputStream(streamToDecode);
         } else {*/
-        Log.d(TAG, "Creating a new data source obj");
+        LogDebug.d(TAG, "Creating a new data source obj");
         data = new DataSource(inputStream);
 
         if (!data.isSourceValid())
@@ -189,13 +189,13 @@ public class ImplDecodeFeed implements DecodeFeed {
      */
     @Override public int onReadEncodedData(byte[] buffer, int amountToWrite) {
         if ((data == null) || !data.isSourceValid()) {
-    		Log.d(TAG, "onReadEncodedData called, but source is invalid");
+            LogDebug.d(TAG, "onReadEncodedData called, but source is invalid");
            	return 0;
     	}
     	//Log.d(TAG, "onReadOpusData call: " + amountToWrite);
         //If the player is not playing or reading the header, return 0 to end the native decode method
         if (playerState.get() == PlayerStates.STOPPED) {
-        	Log.d(TAG, "onReadEncodedData called, but we are stopped");
+            LogDebug.d(TAG, "onReadEncodedData called, but we are stopped");
             return 0;
         }
 
@@ -206,22 +206,22 @@ public class ImplDecodeFeed implements DecodeFeed {
         //Otherwise read from the file
         try {
             int read = data.read(buffer, 0, amountToWrite);
-            Log.d("duc_anh_", "onReadEncodedData read = " + read);
+            LogDebug.d("duc_anh_", "onReadEncodedData read = " + read);
 
             if (read == -1) {
-                Log.d(TAG, "Data read exception");
+                LogDebug.d(TAG, "Data read exception");
                 lastError = ERR_DATASOURCE;
             }
 
             if (read == -2) {
                 // end of stream reached, but no error
-                Log.d(TAG, "Data read end of stream");
+                LogDebug.d(TAG, "Data read end of stream");
             }
 
             return Math.max(read, 0);
         } catch (Exception e) {
             //There was a problem reading from the file
-            Log.e(TAG, "Failed to read encoded data from file, abort. Total:" + streamSecondsLength + " written:" + writtenMiliSeconds, e);
+            LogDebug.e(TAG, "Failed to read encoded data from file, abort. Total:" + streamSecondsLength + " written:" + writtenMiliSeconds + e.getMessage());
             lastError = ERR_DATASOURCE;
             return 0;
         }
@@ -271,7 +271,7 @@ public class ImplDecodeFeed implements DecodeFeed {
     @Override
     public void onWritePCMData(short[] pcmData, int amountToRead, int currentSeconds) {
     	//Log.e(TAG, "currentSeconds:"+currentSeconds);
-        Log.d("duc_anh_", "onWritePCMData amountToRead = " + amountToRead+ " ;currentSeconds = " + currentSeconds);
+        LogDebug.d("duc_anh_", "onWritePCMData amountToRead = " + amountToRead+ " ;currentSeconds = " + currentSeconds);
     	waitPlay();
 			
         //If we received data and are playing, write to the audio track
@@ -304,20 +304,20 @@ public class ImplDecodeFeed implements DecodeFeed {
 //            Log.e(TAG, "sample rate: " + streamInfo.getSampleRate() + " " + streamInfo.getChannels() + " " + streamInfo.getVendor() +  " time:" + writtenMiliSeconds + " bytes:" + writtenPCMData);
         
         } else {
-            Log.e("DataSource", "audio track error");
+            LogDebug.e("DataSource", "audio track error");
         }
     }
 
     public void stopAudioTrack() {
         //Stop the audio track
         if (audioTrack != null) {
-            Log.d(TAG, "Audiotrack flush");
+            LogDebug.d(TAG, "Audiotrack flush");
 
             try {
                 audioTrack.flush();
                 audioTrack.stop();
             } catch (Exception ex) {
-                Log.e(TAG, "Audiotrack stop ex:"+ex.getMessage());
+                LogDebug.e(TAG, "Audiotrack stop ex:"+ex.getMessage());
             }
             audioTrack = null;
         }
@@ -335,15 +335,15 @@ public class ImplDecodeFeed implements DecodeFeed {
         	//Closes the file input stream
             
             if (data.isSourceValid()) {
-            	Log.d(TAG, "onStop called with valid data source total:" + streamSecondsLength + " written:" + writtenMiliSeconds);
+                LogDebug.d(TAG, "onStop called with valid data source total:" + streamSecondsLength + " written:" + writtenMiliSeconds);
             	data.release();
             } else
-        	Log.e(TAG, "onStop invalid data source");
+                LogDebug.e(TAG, "onStop invalid data source");
 
             writtenPCMData = 0;
             writtenMiliSeconds = 0;
 
-            Log.d(TAG, "decoding complete");
+            LogDebug.d(TAG, "decoding complete");
             
             stopAudioTrack();
         }
@@ -368,13 +368,13 @@ public class ImplDecodeFeed implements DecodeFeed {
     public void onStart(long sampleRate, long channels, String vendor, String title, String artist, String album, String date, String track)    
  {
     	DecodeStreamInfo decodeStreamInfo = new DecodeStreamInfo(sampleRate, channels, vendor, title, artist, album, date, track);
-        Log.e(TAG, "onStart state:" + playerState.get());
-        
-        Log.e(TAG, "len tests:" + data.getSourceLength() + " " + sampleRate + " " + channels + " dura:" + ((data.getSourceLength() * 8) / (sampleRate * channels)) );
+     LogDebug.e(TAG, "onStart state:" + playerState.get());
+
+     LogDebug.e(TAG, "len tests:" + data.getSourceLength() + " " + sampleRate + " " + channels + " dura:" + ((data.getSourceLength() * 8) / (sampleRate * channels)) );
 
     	if (playerState.get() != PlayerStates.READING_HEADER &&
         		playerState.get() != PlayerStates.PLAYING) {
-    		Log.e(TAG, "Must read header first!");
+            LogDebug.e(TAG, "Must read header first!");
             //throw new IllegalStateException("Must read header first!");
             return;
         }
@@ -384,14 +384,14 @@ public class ImplDecodeFeed implements DecodeFeed {
         if (decodeStreamInfo.getSampleRate() <= 0) {
             throw new IllegalArgumentException("Invalid sample rate, must be above 0");
         }
-        Log.d(TAG, "onStart call ok (Vendor:" + decodeStreamInfo.getVendor() + ") Track parameters: Title:"+ decodeStreamInfo.getTitle() + " Artist:"+decodeStreamInfo.getArtist() +
+     LogDebug.d(TAG, "onStart call ok (Vendor:" + decodeStreamInfo.getVendor() + ") Track parameters: Title:"+ decodeStreamInfo.getTitle() + " Artist:"+decodeStreamInfo.getArtist() +
         		" Album:" + decodeStreamInfo.getAlbum() + " Date:" + decodeStreamInfo.getDate() + " Track:" + decodeStreamInfo.getTrack());
 
         streamInfo = decodeStreamInfo;
         
         // we are already playing but track changed
         if (playerState.get() != PlayerStates.STOPPED) {
-            Log.d(TAG, "change track");
+            LogDebug.d(TAG, "change track");
             stopAudioTrack();
         }
         
@@ -426,7 +426,7 @@ public class ImplDecodeFeed implements DecodeFeed {
                     Visualizer.getMaxCaptureRate() / 2, false, true);
             visualizer.setEnabled(true);
         } catch (Exception ex) {
-            Log.e(TAG, "AudioTrack exception:" + ex.getMessage());
+            LogDebug.e(TAG, "AudioTrack exception:" + ex.getMessage());
             lastError = ERR_AUDIO;
             return;
         }
@@ -449,7 +449,7 @@ public class ImplDecodeFeed implements DecodeFeed {
      */
     @Override
     public void onStartReadingHeader() {
-    	Log.e(TAG, "onStartReadingHeader called, state="+playerState.get());
+        LogDebug.e(TAG, "onStartReadingHeader called, state="+playerState.get());
         if (playerState.isStopped()) {
         	events.sendEvent(PlayerEvents.READING_HEADER);
             playerState.set(PlayerStates.READING_HEADER);

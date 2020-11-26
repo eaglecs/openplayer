@@ -9,7 +9,7 @@ class ChatBotHeaderInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val requestBuilder = original.newBuilder()
-        val method = original.method()
+        val method = original.method
         requestBuilder.header("Content-Type", "application/octet-stream")
         requestBuilder.header("device-id", "9b18cd075b4fabfe")
         requestBuilder.header("device-type", "android")
@@ -25,7 +25,7 @@ class ChatBotHeaderInterceptor: Interceptor {
         }
         requestBuilder.header("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MDU3NzIzMTksIm5iZiI6MTYwNTc3MjMxOSwianRpIjoiMmRhNmE1ZTAtYTJjNi00OTcwLWEwY2EtNTQwNTUzOWRhNWRhIiwiaWRlbnRpdHkiOiJ7XCJzdWJcIjogMTY3LCBcIm5hbWVcIjogXCJEdWMgQW5oXCIsIFwiZW1haWxcIjogXCJsZWR1Y2FuaC5ia2l0MTBAZ21haWwuY29tXCIsIFwicm9sZVwiOiAxLCBcInN0YXR1c1wiOiAxLCBcImRldmljZV9pZFwiOiBcIjliMThjZDA3NWI0ZmFiZmVcIiwgXCJkZWZhdWx0X2xhbmd1YWdlXCI6IFwidmktVk5cIiwgXCJleHByaXJhdGlvblwiOiA4NjQwMCwgXCJwaG9uZV9udW1iZXJcIjogXCIwMTIzNDU2Nzg5NlwiLCBcImNhbGxpbmdfbmFtZVwiOiBcIkxlIER1YyBBbmhcIn0iLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.yjvT1W8LlW5NyARCeLjSs7QHgb7-U2J1nLNDqGIb3I8")
         requestBuilder.header("user-id", "167")
-        requestBuilder.method(method, original.body())
+        requestBuilder.method(method, original.body)
         return chain.proceed(requestBuilder.build())
     }
 }

@@ -8,8 +8,6 @@
 
 package com.audionowdigital.android.openplayer;
 
-import android.util.Log;
-
 /**
  * Created by radhoo on /14.
  */
@@ -44,7 +42,7 @@ public class PlayerStates {
         } else {
             stateStr = "other" ;
         }
-    	Log.e("PlayerStates", "new state:"+stateStr);
+        LogDebug.e("PlayerStates", "new state:"+stateStr);
     	playerState = state;
     }
     
