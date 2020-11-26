@@ -432,9 +432,9 @@ public class ImplDecodeFeed implements DecodeFeed {
         }
        
         if (playerState.get() == PlayerStates.READING_HEADER) {
-	        events.sendEvent(PlayerEvents.READY_TO_PLAY, audioTrack.getAudioSessionId());
-	        //We're ready to starting to read actual content
-	        playerState.set(PlayerStates.READY_TO_PLAY);
+            //We're ready to starting to read actual content
+            playerState.set(PlayerStates.READY_TO_PLAY);
+            events.sendEvent(PlayerEvents.READY_TO_PLAY, audioTrack.getAudioSessionId());
         }
         events.sendEvent(PlayerEvents.TRACK_INFO, decodeStreamInfo.getVendor(),
     			decodeStreamInfo.getTitle(),

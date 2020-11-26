@@ -132,7 +132,7 @@ public class Player implements Runnable {
         Log.d("duc_anh","play.....");
         if (playerState.get() == PlayerStates.READING_HEADER){
             Log.d("duc_anh","PlayerStates == READING_HEADER");
-//            stop();
+            stop();
             return;
         }
         if (playerState.get() == PlayerStates.STOPPED){
