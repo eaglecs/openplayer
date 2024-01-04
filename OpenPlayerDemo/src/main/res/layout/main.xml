@@ -29,6 +29,12 @@
         android:layout_height="wrap_content"/>
 
     <Button
+        android:id="@+id/connect"
+        android:text="CONNECT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
         android:id="@+id/play"
         android:text="PLAY"
         android:layout_width="match_parent"

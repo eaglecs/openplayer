@@ -16,9 +16,9 @@ class Event(
 
 class Header(
         @SerializedName("dialogRequestId")
-        var dialogRequestId: String = "20201120-f632377981b284fa1bcb",
+        var dialogRequestId: String = "dialogRequestId-" + System.currentTimeMillis().toString(),
         @SerializedName("messageId")
-        var messageId: String = "messageId-20201120-1d3df242610a151cb169",
+        var messageId: String  = "messageId-" + System.currentTimeMillis().toString(),
         @SerializedName("name")
         var name: String = "StreamAudio",
         @SerializedName("namespace")

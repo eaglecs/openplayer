@@ -40,7 +40,7 @@ void onWritePCMData(JNIEnv *env, jobject* javaDecodeFeedObj, jmethodID* writePCM
     //No data to read, just exit
     if(bytes == 0) return;
 
-    //LOGI(LOG_TAG, "onWritePCMData %d", bytes);
+    LOGI(LOG_TAG, "onWritePCMData %d", bytes);
 
     //Copy the contents of what we're writing to the java short array
     (*env)->SetShortArrayRegion(env, (*jShortArrayWriteBuffer), 0, bytes, (jshort *)buffer);

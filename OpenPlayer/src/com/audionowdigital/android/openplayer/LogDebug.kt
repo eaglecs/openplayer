@@ -6,7 +6,7 @@ object LogDebug {
     @JvmStatic
     fun d(tag: String = "",msg: String){
 //        if (BuildConfig.DEBUG){
-            Log.d("duc_anh", "$tag $msg" )
+            Log.d("duc_anh_", "$tag $msg" )
 //        }
 //        else {
 //            Log.d("duc_anh", "$tag $msg" )
@@ -16,7 +16,7 @@ object LogDebug {
     @JvmStatic
     fun e(tag: String = "",msg: String){
 //        if (BuildConfig.DEBUG){
-            Log.e("duc_anh", "$tag $msg")
+            Log.e("duc_anh_", "$tag $msg")
 //        }
 //
 //        else {

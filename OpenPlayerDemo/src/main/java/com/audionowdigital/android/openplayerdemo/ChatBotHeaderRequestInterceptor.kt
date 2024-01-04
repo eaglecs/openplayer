@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class ChatBotHeaderInterceptor(private val serverMessageId: String) : Interceptor {
+class ChatBotHeaderRequestInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val requestBuilder = original.newBuilder()
@@ -18,9 +18,7 @@ class ChatBotHeaderInterceptor(private val serverMessageId: String) : Intercepto
         requestBuilder.header("timezone", "Asia/Ho_Chi_Minh")
         requestBuilder.header("olli-session-id", "755095a0-2be6-11eb-97e1-0b68a0480c6c")
         val gson = Gson()
-        val metaStreamGPTRequest = MetaStreamGPTRequest()
-        metaStreamGPTRequest.event.header.serverMessageId = serverMessageId
-        metaStreamGPTRequest.event.payload.serverMessageId = serverMessageId
+        val metaStreamGPTRequest = MetaRequestStreamGPTRequest()
         val metaStr = gson.toJson(metaStreamGPTRequest)
         LogDebug.d(msg = "send request: $metaStr")
         val data: ByteArray = metaStr.toByteArray()

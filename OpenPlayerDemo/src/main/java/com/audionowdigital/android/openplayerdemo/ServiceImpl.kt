@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 class ServiceImpl {
     companion object{
         @JvmStatic
-        fun streamChat(): Observable<ResponseBody>{
+        fun streamChat(serverMessageId: String): Observable<ResponseBody>{
             val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://staging.chatbot.iviet.com")
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -23,11 +23,45 @@ class ServiceImpl {
                                     .connectTimeout(30, TimeUnit.SECONDS)
                                     .readTimeout(30, TimeUnit.SECONDS)
                                     .writeTimeout(30, TimeUnit.SECONDS)
-                                    .addInterceptor(ChatBotHeaderInterceptor())
+                                    .addInterceptor(ChatBotHeaderInterceptor(serverMessageId))
                                     .build()
                     )
                     .build()
             return retrofit.create(ApiService::class.java).streamChat()
+        }
+
+        fun getResponseChatGPT(): Observable<ResponseBody>{
+            val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://staging.chatbot.iviet.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(
+                    OkHttpClient.Builder()
+                        .retryOnConnectionFailure(true)
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .readTimeout(30, TimeUnit.SECONDS)
+                        .writeTimeout(30, TimeUnit.SECONDS)
+                        .addInterceptor(ChatBotHeaderRequestInterceptor())
+                        .build()
+                )
+                .build()
+            return retrofit.create(ApiService::class.java).streamChat()
+        }
+
+        fun getConnectChatbot(): Observable<ResponseBody>{
+            val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://staging.chatbot.iviet.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(
+                    OkHttpClient.Builder()
+                        .retryOnConnectionFailure(true)
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .readTimeout(30, TimeUnit.SECONDS)
+                        .writeTimeout(30, TimeUnit.SECONDS)
+                        .addInterceptor(ChatBotHeaderConnectInterceptor())
+                        .build()
+                )
+                .build()
+            return retrofit.create(ApiService::class.java).createDownChannel()
         }
     }
 }
