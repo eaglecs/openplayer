@@ -28,19 +28,19 @@ android {
         }
     }
 
-	sourceSets {
-    		main {
-        		manifest.srcFile 'AndroidManifest.xml'
-        		java.srcDirs = ['src']
-        		res.srcDirs = ['res']
-//			jni.srcDirs = []
-////			jniLibs.srcDirs = ['libs']
-    		}
-	}
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 
-//    packagingOptions {
-//        pickFirst '**/*.so'
-//    }
+    packagingOptions {
+        pickFirst '**/*.so'
+    }
 }
 dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.8.1"
