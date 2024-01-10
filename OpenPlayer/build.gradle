@@ -1,5 +1,5 @@
 apply plugin: 'android-library'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 apply plugin: 'kotlin-android'
 
 group = 'com.audionowdigital'
@@ -7,19 +7,11 @@ version = '1.0'
 project.archivesBaseName = 'open-player-android'
 
 android {
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-    namespace = "com.audionowdigital.android.openplayerdemo"
-    compileSdk 33
-    buildToolsVersion '33.0.1'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.0'
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 33
+        minSdkVersion 14
+        targetSdkVersion 26
     }
 
     externalNativeBuild {
@@ -33,8 +25,8 @@ android {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
             res.srcDirs = ['res']
-            jni.srcDirs = []
-            jniLibs.srcDirs = ['libs']
+			jni.srcDirs = []
+			jniLibs.srcDirs = ['libs']
         }
     }
 
@@ -42,6 +34,7 @@ android {
         pickFirst '**/*.so'
     }
 }
+
 dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.8.1"
 }
@@ -49,10 +42,10 @@ dependencies {
 //sourceSets.main.jni.srcDirs = []
 
 uploadArchives {
-  repositories {
-    mavenDeployer {
-      repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+    repositories {
+        mavenDeployer {
+            repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+        }
     }
-  }
 }
 task install(dependsOn: uploadArchives)
