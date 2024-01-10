@@ -48,11 +48,11 @@ dependencies {
 
 //sourceSets.main.jni.srcDirs = []
 
-//uploadArchives {
-//  repositories {
-//    mavenDeployer {
-//      repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
-//    }
-//  }
-//}
-//task install(dependsOn: uploadArchives)
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+    }
+  }
+}
+task install(dependsOn: uploadArchives)
