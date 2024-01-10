@@ -48,6 +48,14 @@ dependencies {
 
 //sourceSets.main.jni.srcDirs = []
 
+
+publishing {
+    repositories {
+        maven {
+            url = uri("${rootProject.projectDir}/maven-repo")
+        }
+    }
+}
 //uploadArchives {
 //  repositories {
 //    mavenDeployer {
