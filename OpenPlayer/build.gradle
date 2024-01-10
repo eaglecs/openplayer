@@ -15,7 +15,7 @@ android {
         jvmTarget = '17'
     }
     namespace = "com.audionowdigital.android.openplayerdemo"
-    compileSdkVersion 33
+    compileSdk 33
     buildToolsVersion '33.0.1'
     defaultConfig {
         minSdkVersion 15
