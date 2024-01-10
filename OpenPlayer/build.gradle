@@ -52,15 +52,14 @@ dependencies {
 publishing {
     repositories {
         maven {
-            url = uri('file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath)
+            url = uri("${rootProject.projectDir}/maven-repo")
         }
     }
 }
 //uploadArchives {
 //  repositories {
 //    mavenDeployer {
-//
-//        repository url: sssss
+//      repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
 //    }
 //  }
 //}
