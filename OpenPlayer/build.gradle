@@ -1,12 +1,13 @@
 plugins {
+    id 'kotlin-android'
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish' // 2. Add this line
 }
 
-//group = 'com.audionowdigital'
-//version = '1.1.7'
-//project.archivesBaseName = 'openplayerandroid'
+//group = 'com.audio.open.player'
+//version = '1.0'
+//project.archivesBaseName = 'open-player-android'
 
 android {
     compileOptions {
@@ -16,8 +17,9 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-    namespace = "com.audio.now.digital"
+    namespace = "com.audionowdigital.android.openplayer"
     compileSdk 33
+    buildToolsVersion '33.0.1'
     defaultConfig {
         minSdk 15
         targetSdk 33
@@ -76,7 +78,7 @@ dependencies {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.audio.now.digital'
+            groupId = 'com.audionowdigital.android.openplayer'
             artifactId = 'open-player'
             version = "2.0.0"
             pom {
@@ -88,19 +90,3 @@ publishing {
         mavenLocal()
     }
 }
-
-//publishing {
-//    repositories {
-//        maven {
-//            url = uri("${rootProject.projectDir}/maven-repo")
-//        }
-//    }
-//}
-//uploadArchives {
-//  repositories {
-//    mavenDeployer {
-//      repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
-//    }
-//  }
-//}
-//task install(dependsOn: uploadArchives)
