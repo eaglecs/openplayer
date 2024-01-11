@@ -1,4 +1,4 @@
-package com.audionowdigital.android.openplayerdemo
+package com.audio.now.digital.openplayerdemo
 
 import android.util.Base64
 import com.audionowdigital.android.openplayer.LogDebug

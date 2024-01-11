@@ -1,16 +1,16 @@
-package com.audionowdigital.android.openplayerdemo
+package com.audio.now.digital.openplayerdemo
 
 import com.google.gson.annotations.SerializedName
 
 class MetaStreamRequest (
         @SerializedName("event")
-        var event: Event= Event()
+        var event: Event = Event()
 )
 
 class Event(
-        @SerializedName("header")
+    @SerializedName("header")
         var header: Header = Header(),
-        @SerializedName("payload")
+    @SerializedName("payload")
         var payload: PayloadDevice = PayloadDevice()
 )
 

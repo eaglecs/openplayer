@@ -1,10 +1,10 @@
-package com.audionowdigital.android.openplayerdemo
+package com.audio.now.digital.openplayerdemo
 
 import com.google.gson.annotations.SerializedName
 
 class MetaRequestStreamGPTRequest (
-        @SerializedName("event")
-        var event: EventRequestGPT= EventRequestGPT(),
+    @SerializedName("event")
+        var event: EventRequestGPT = EventRequestGPT(),
 )
 
 class EventRequestGPT(

@@ -1,4 +1,4 @@
-package com.audionowdigital.android.openplayerdemo;
+package com.audio.now.digital.openplayerdemo;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -34,7 +32,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -460,66 +457,54 @@ public class MainActivity extends Activity {
     }
 
     private void initUi() {
-        logArea = (TextView) findViewById(R.id.log_area);
-        urlArea = (EditText) findViewById(R.id.url_area);
-        initWithFile = (Button) findViewById(R.id.init_file);
-        initWithUrl = (Button) findViewById(R.id.init_url);
-        play = (Button) findViewById(R.id.play);
-        connect = (Button) findViewById(R.id.connect);
-        pause = (Button) findViewById(R.id.pause);
-        stop = (Button) findViewById(R.id.stop);
-        seekBar = (SeekBar) findViewById(R.id.seek);
+        logArea = findViewById(R.id.log_area);
+        urlArea = findViewById(R.id.url_area);
+        initWithFile = findViewById(R.id.init_file);
+        initWithUrl = findViewById(R.id.init_url);
+        play = findViewById(R.id.play);
+        connect = findViewById(R.id.connect);
+        pause = findViewById(R.id.pause);
+        stop = findViewById(R.id.stop);
+        seekBar = findViewById(R.id.seek);
 
-        initWithFile.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                logArea.setText("");
-                switch (type) {
-                    case VORBIS:
-                        player.setDataSource("/data/user/0/com.olli.omni.demo/test6712552759787625685.ogg", 11);
-                        break;
-                    case OPUS:
-                        player.setDataSource("/sdcard/countdown.opus", 11);
-                        break;
-                    case MX:
-                        player.setDataSource("/sdcard/countdown.mp3", 11);
-                        break;
-                }
+        initWithFile.setOnClickListener(arg0 -> {
+            logArea.setText("");
+            switch (type) {
+                case VORBIS:
+                    player.setDataSource("/data/user/0/com.olli.omni.demo/test6712552759787625685.ogg", 11);
+                    break;
+                case OPUS:
+                    player.setDataSource("/sdcard/countdown.opus", 11);
+                    break;
+                case MX:
+                    player.setDataSource("/sdcard/countdown.mp3", 11);
+                    break;
             }
         });
 
-        initWithUrl.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                logArea.setText("");
-                Log.d(TAG, "Set source:" + urlArea.getEditableText().toString());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (checkIfAlreadyhavePermission()) {
+        initWithUrl.setOnClickListener(arg0 -> {
+            logArea.setText("");
+            Log.d(TAG, "Set source:" + urlArea.getEditableText().toString());
+            new Thread(() -> {
+                if (checkIfAlreadyhavePermission()) {
 //                            player.setDataSource(urlArea.getEditableText().toString(), LENGTH);
-                            testOgg();
-                        } else {
-                            String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO};
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                requestPermissions(permissions, 100);
-                            }
-                        }
+                    testOgg();
+                } else {
+                    String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO};
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(permissions, 100);
                     }
-                }).start();
-            }
+                }
+            }).start();
         });
 
 
-        play.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                if (player != null && player.isReadyToPlay()) {
-                    logArea.setText("Playing... ");
-                    player.play();
-                } else
-                    logArea.setText("Player not initialized or not ready to play");
-            }
+        play.setOnClickListener(arg0 -> {
+            if (player != null && player.isReadyToPlay()) {
+                logArea.setText("Playing... ");
+                player.play();
+            } else
+                logArea.setText("Player not initialized or not ready to play");
         });
 
         pause.setOnClickListener(arg0 -> {
@@ -530,15 +515,12 @@ public class MainActivity extends Activity {
                 logArea.setText("Player not initialized or not playing");
         });
 
-        stop.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                if (player != null) {
-                    logArea.setText("Stopped");
-                    player.stop();
-                } else
-                    logArea.setText("Player not initialized");
-            }
+        stop.setOnClickListener(arg0 -> {
+            if (player != null) {
+                logArea.setText("Stopped");
+                player.stop();
+            } else
+                logArea.setText("Player not initialized");
         });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

@@ -1,18 +1,18 @@
-package com.audionowdigital.android.openplayerdemo
+package com.audio.now.digital.openplayerdemo
 
 import com.google.gson.annotations.SerializedName
 
 class MetaStreamGPTRequest (
-        @SerializedName("event")
-        var event: EventGPT= EventGPT(),
-        @SerializedName("sampleRate")
+    @SerializedName("event")
+        var event: EventGPT = EventGPT(),
+    @SerializedName("sampleRate")
         val sampleRate: Int = 16000
 )
 
 class EventGPT(
-        @SerializedName("header")
+    @SerializedName("header")
         var header: HeaderGPT = HeaderGPT(),
-        @SerializedName("payload")
+    @SerializedName("payload")
         var payload: PayloadDeviceGPT = PayloadDeviceGPT()
 )
 

@@ -1,10 +1,12 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish' // 2. Add this line
+}
 
-group = 'com.audionowdigital'
-version = '1.1.7'
-project.archivesBaseName = 'openplayerandroid'
+//group = 'com.audionowdigital'
+//version = '1.1.7'
+//project.archivesBaseName = 'openplayerandroid'
 
 android {
     compileOptions {
@@ -14,12 +16,18 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-    namespace = "com.audionowdigital.android.openplayerdemo"
+    namespace = "com.audio.now.digital"
     compileSdk 33
-    buildToolsVersion '33.0.1'
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 33
+        minSdk 15
+        targetSdk 33
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            consumerProguardFiles 'consumer-rules.pro' //3. Add this line
+        }
     }
 
     externalNativeBuild {
@@ -42,20 +50,52 @@ android {
         pickFirst '**/*.so'
     }
 }
+// 4. Add below line
+//===============================
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)        // << --- ADD This
+    }
+}
+//===============================
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17            // << --- ADD This
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 dependencies {
-    implementation "com.squareup.okhttp3:okhttp:4.8.1"
+    implementation "com.squareup.okhttp3:okhttp:4.10.0"
 }
 
 //sourceSets.main.jni.srcDirs = []
 
 
+// 5. Add below line
+//===============================
 publishing {
-    repositories {
-        maven {
-            url = uri("${rootProject.projectDir}/maven-repo")
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.audio.now.digital'
+            artifactId = 'open-player'
+            version = "2.0.0"
+            pom {
+                description = 'First release'
+            }
         }
     }
+    repositories {
+        mavenLocal()
+    }
 }
+
+//publishing {
+//    repositories {
+//        maven {
+//            url = uri("${rootProject.projectDir}/maven-repo")
+//        }
+//    }
+//}
 //uploadArchives {
 //  repositories {
 //    mavenDeployer {

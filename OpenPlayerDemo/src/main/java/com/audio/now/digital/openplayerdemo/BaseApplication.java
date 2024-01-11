@@ -1,4 +1,4 @@
-package com.audionowdigital.android.openplayerdemo;
+package com.audio.now.digital.openplayerdemo;
 
 import android.app.Application;
 
