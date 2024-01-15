@@ -229,7 +229,7 @@ public class ImplDecodeFeed implements DecodeFeed {
 
     /**
      * Called to change the current read position for the InputStream.
-     * @throws java.lang.IllegalStateException for live streams.
+     * @throws IllegalStateException for live streams.
      * @param percent - percentage where to seek
      */
     @Override

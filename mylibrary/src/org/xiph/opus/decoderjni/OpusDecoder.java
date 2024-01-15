@@ -8,8 +8,6 @@
 
 package org.xiph.opus.decoderjni;
 
-import android.util.Log;
-
 import com.audionowdigital.android.openplayer.DecodeFeed;
 
 /**

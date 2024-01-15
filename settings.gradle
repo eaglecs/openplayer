@@ -9,5 +9,6 @@
  * in the user guide at http://gradle.org/docs/1.12/userguide/multi_project_builds.html
  */
 
+include ':mylibrary'
 include ':OpenPlayer'
 include ':OpenPlayerDemo'

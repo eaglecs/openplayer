@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
 
     private SeekBar seekBar;
 
-    private Player.DecoderType type = DecoderType.VORBIS;
+    private Player.DecoderType type = DecoderType.OPUS;
 
     private Player player;
 
@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
                 LENGTH = 215;
                 break;
             case OPUS:
-                urlArea.setText("http://www.markosoft.ro/opus/02_Archangel.opus");
+                urlArea.setText("https://getsamplefiles.com/download/opus/sample-1.opus");
                 LENGTH = 154;
                 break;
             case MX:
@@ -220,7 +220,8 @@ public class MainActivity extends Activity {
 
 
     private void testOgg() {
-        testTTSChatGPT();
+        player.setDataSource("https://getsamplefiles.com/download/opus/sample-2.opus", -1);
+//        testTTSChatGPT();
     }
 
 

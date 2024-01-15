@@ -184,7 +184,7 @@ public class Player implements Runnable {
     public void run() {
         LogDebug.e(TAG, "Start the native decoder");
         
-        android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
+        Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
         
         int result = 0;
         switch (type) {
@@ -272,7 +272,7 @@ public class Player implements Runnable {
 
     /**
      * Seek to a certain percentage in the current playing file.
-     * @throws java.lang.IllegalStateException for live streams
+     * @throws IllegalStateException for live streams
      * @param percentage - position where to seek
      */
     public synchronized void setPosition(int percentage) {
