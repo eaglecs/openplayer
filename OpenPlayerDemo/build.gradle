@@ -52,8 +52,8 @@ android {
 dependencies {
 //    compile 'org.roboguice:roboguice:3.0.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':openplayer')
 //    provided 'org.roboguice:roboblender:3.0.1'
-    implementation project(':mylibrary')
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"

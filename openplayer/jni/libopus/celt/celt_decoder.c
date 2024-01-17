@@ -50,6 +50,7 @@
 #include <stdarg.h>
 #include "celt_lpc.h"
 #include "vq.h"
+#include "opus_custom.h"
 
 /**********************************************************************/
 /*                                                                    */
@@ -102,7 +103,7 @@ int celt_decoder_get_size(int channels)
    return opus_custom_decoder_get_size(mode, channels);
 }
 
-OPUS_CUSTOM_NOSTATIC int opus_custom_decoder_get_size(const CELTMode *mode, int channels)
+int opus_custom_decoder_get_size(const CELTMode *mode, int channels)
 {
    int size = sizeof(struct CELTDecoder)
             + (channels*(DECODE_BUFFER_SIZE+mode->overlap)-1)*sizeof(celt_sig)
@@ -141,7 +142,7 @@ int celt_decoder_init(CELTDecoder *st, opus_int32 sampling_rate, int channels)
       return OPUS_OK;
 }
 
-OPUS_CUSTOM_NOSTATIC int opus_custom_decoder_init(CELTDecoder *st, const CELTMode *mode, int channels)
+int opus_custom_decoder_init(CELTDecoder *st, const CELTMode *mode, int channels)
 {
    if (channels < 0 || channels > 2)
       return OPUS_BAD_ARG;
