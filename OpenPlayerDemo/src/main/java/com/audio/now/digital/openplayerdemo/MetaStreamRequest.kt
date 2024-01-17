@@ -27,7 +27,7 @@ class Header(
 
 class PayloadDevice(
         @SerializedName("text")
-        var text: String = "Khi còn nhỏ, tôi đã coi Maradona là thần tượng. Thật vinh dự khi có vài lần được gặp ông. Maradona là một cầu thủ tuyệt vời, và là một một đàn ông ấm áp, thân thiện ở ngoài sân cỏ. Ông là nguồn cảm hứng thi đấu cho tôi và nhiều thế hệ cầu thủ. Hãy yên nghỉ",
+        var text: String = "Bây giờ là 10 giờ 45 phút",
         @SerializedName("encodeFormat")
         var encodeFormat: String = "raw",
         @SerializedName("language")

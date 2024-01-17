@@ -18,10 +18,10 @@ class ChatBotHeaderInterceptor(private val serverMessageId: String) : Intercepto
         requestBuilder.header("timezone", "Asia/Ho_Chi_Minh")
         requestBuilder.header("olli-session-id", "755095a0-2be6-11eb-97e1-0b68a0480c6c")
         val gson = Gson()
-        val metaStreamGPTRequest = MetaStreamGPTRequest()
-        metaStreamGPTRequest.event.header.serverMessageId = serverMessageId
-        metaStreamGPTRequest.event.payload.serverMessageId = serverMessageId
-        val metaStr = gson.toJson(metaStreamGPTRequest)
+//        val metaStreamGPTRequest = MetaStreamGPTRequest()
+//        metaStreamGPTRequest.event.header.serverMessageId = serverMessageId
+//        metaStreamGPTRequest.event.payload.serverMessageId = serverMessageId
+        val metaStr = gson.toJson(MetaStreamRequest())
         LogDebug.d(msg = "send request: $metaStr")
         val data: ByteArray = metaStr.toByteArray()
         val metaBase64 = Base64.encodeToString(data, Base64.NO_WRAP)

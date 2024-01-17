@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
 
     private SeekBar seekBar;
 
-    private Player.DecoderType type = DecoderType.OPUS;
+    private Player.DecoderType type = DecoderType.VORBIS;
 
     private Player player;
 
@@ -489,7 +489,15 @@ public class MainActivity extends Activity {
             new Thread(() -> {
                 if (checkIfAlreadyhavePermission()) {
 //                            player.setDataSource(urlArea.getEditableText().toString(), LENGTH);
-                    testOgg();
+//                    testOgg();
+
+                    new Thread(() -> {
+                        LogDebug.d("send request stream = ", "");
+                        Observable<ResponseBody> observable = ServiceImpl.Companion.streamChat("")
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                        observable.subscribeWith(getObserver());
+                    }).start();
                 } else {
                     String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO};
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
