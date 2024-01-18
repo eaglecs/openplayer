@@ -237,8 +237,8 @@ JNIEXPORT int JNICALL Java_org_xiph_vorbis_decoderjni_VorbisDecoder_readDecodeWr
 				// while packets
 
 				// check stream end
-				if (ogg_page_eos(&og)) {
-					LOGE(LOG_TAG, "Stream finished.....");
+//				if (ogg_page_eos(&og)) {
+//					LOGE(LOG_TAG, "Stream finished.....");
 //					// clean up this logical bitstream;
 //					ogg_stream_clear(&os);
 //					vorbis_comment_clear(&vc);
@@ -253,7 +253,7 @@ JNIEXPORT int JNICALL Java_org_xiph_vorbis_decoderjni_VorbisDecoder_readDecodeWr
 //
 //					inited = 0;
 //					break;
-				}
+//				}
 			}
         	// page if
         } // while pages

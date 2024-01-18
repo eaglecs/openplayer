@@ -21,6 +21,7 @@ class ChatBotHeaderInterceptor(private val serverMessageId: String) : Intercepto
 //        val metaStreamGPTRequest = MetaStreamGPTRequest()
 //        metaStreamGPTRequest.event.header.serverMessageId = serverMessageId
 //        metaStreamGPTRequest.event.payload.serverMessageId = serverMessageId
+//        val metaStr = gson.toJson(metaStreamGPTRequest)
         val metaStr = gson.toJson(MetaStreamRequest())
         LogDebug.d(msg = "send request: $metaStr")
         val data: ByteArray = metaStr.toByteArray()

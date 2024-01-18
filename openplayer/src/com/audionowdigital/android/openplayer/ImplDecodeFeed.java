@@ -26,7 +26,7 @@ public class ImplDecodeFeed implements DecodeFeed {
 	/**
 	 * The debug tag
 	 */
-	private String TAG = "ImplDecodeFeed";
+	private String TAG = "duc_anh";
 	/**
 	 * Hold the player state object to know about any changes
 	 */

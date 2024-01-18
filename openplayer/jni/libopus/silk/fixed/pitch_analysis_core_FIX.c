@@ -244,8 +244,8 @@ opus_int silk_pitch_analysis_core(                  /* O    Voicing estimate: 0 
     /* Sort */
     length_d_srch = silk_ADD_LSHIFT32( 4, complexity, 1 );
     silk_assert( 3 * length_d_srch <= PE_D_SRCH_LENGTH );
-    silk_insertion_sort_decreasing_int16( C, d_srch, CSTRIDE_4KHZ,
-                                          length_d_srch );
+//    silk_insertion_sort_decreasing_int16( C, d_srch, CSTRIDE_4KHZ,
+//                                          length_d_srch );
 
     /* Escape if correlation is very low already here */
     Cmax = (opus_int)C[ 0 ];                                                    /* Q14 */

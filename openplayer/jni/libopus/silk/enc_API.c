@@ -420,7 +420,7 @@ opus_int silk_Encode(                                   /* O    Returns error co
                         psEnc->state_Fxx[ 1 ].sCmn.sNSQ.prev_gain_Q16      = 65536;
                         psEnc->state_Fxx[ 1 ].sCmn.first_frame_after_reset = 1;
                     }
-                    silk_encode_do_VAD_Fxx( &psEnc->state_Fxx[ 1 ] );
+//                    silk_encode_do_VAD_Fxx( &psEnc->state_Fxx[ 1 ] );
                 } else {
                     psEnc->state_Fxx[ 1 ].sCmn.VAD_flags[ psEnc->state_Fxx[ 0 ].sCmn.nFramesEncoded ] = 0;
                 }
@@ -435,7 +435,7 @@ opus_int silk_Encode(                                   /* O    Returns error co
                 silk_memcpy( psEnc->state_Fxx[ 0 ].sCmn.inputBuf, psEnc->sStereo.sMid, 2 * sizeof( opus_int16 ) );
                 silk_memcpy( psEnc->sStereo.sMid, &psEnc->state_Fxx[ 0 ].sCmn.inputBuf[ psEnc->state_Fxx[ 0 ].sCmn.frame_length ], 2 * sizeof( opus_int16 ) );
             }
-            silk_encode_do_VAD_Fxx( &psEnc->state_Fxx[ 0 ] );
+//            silk_encode_do_VAD_Fxx( &psEnc->state_Fxx[ 0 ] );
 
             /* Encode */
             for( n = 0; n < encControl->nChannelsInternal; n++ ) {
@@ -480,9 +480,9 @@ opus_int silk_Encode(                                   /* O    Returns error co
                     } else {
                         condCoding = CODE_CONDITIONALLY;
                     }
-                    if( ( ret = silk_encode_frame_Fxx( &psEnc->state_Fxx[ n ], nBytesOut, psRangeEnc, condCoding, maxBits, useCBR ) ) != 0 ) {
+//                    if( ( ret = silk_encode_frame_Fxx( &psEnc->state_Fxx[ n ], nBytesOut, psRangeEnc, condCoding, maxBits, useCBR ) ) != 0 ) {
                         silk_assert( 0 );
-                    }
+//                    }
                 }
                 psEnc->state_Fxx[ n ].sCmn.controlled_since_last_payload = 0;
                 psEnc->state_Fxx[ n ].sCmn.inputBufIx = 0;

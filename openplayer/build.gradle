@@ -29,11 +29,11 @@ android {
     }
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
+//            manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
-            res.srcDirs = ['res']
+//            res.srcDirs = ['res']
 //            jni.srcDirs = []
-            jniLibs.srcDirs = ['libs']
+//            jniLibs.srcDirs = ['libs']
         }
     }
 

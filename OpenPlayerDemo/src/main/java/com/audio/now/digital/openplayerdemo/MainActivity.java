@@ -259,10 +259,11 @@ public class MainActivity extends Activity {
     String lstFullData = "";
 
     private void playStreamTTS(ResponseBody s) throws IOException {
-        InputStream inputStream = s.byteStream();
-//        BufferedSource source = s.source();
-//        while (!source.exhausted()) {
-//            InputStream inputStream = source.inputStream();
+//        InputStream inputStream = s.byteStream();
+//        player.setDataSource(inputStream, -1);
+        BufferedSource source = s.source();
+        while (!source.exhausted()) {
+            InputStream inputStream = source.inputStream();
         String resultCurrent = "";
         int read = 0;
         byte[] buffer = new byte[16 * 1024];
@@ -307,7 +308,7 @@ public class MainActivity extends Activity {
 //            byte[] bytes = toByteArray(inputStream);
 //            String bytesToHex = bytesToHex(bytes);
 //            LogDebug.d("part stream = ", "");
-//        }
+        }
     }
 
     ArrayList<String> lstData = new ArrayList<>();
