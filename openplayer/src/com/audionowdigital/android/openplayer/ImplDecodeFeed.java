@@ -26,7 +26,7 @@ public class ImplDecodeFeed implements DecodeFeed {
 	/**
 	 * The debug tag
 	 */
-	private String TAG = "duc_anh";
+	private String TAG = "duc_anh_ImplDecodeFeed";
 	/**
 	 * Hold the player state object to know about any changes
 	 */
@@ -365,7 +365,7 @@ public class ImplDecodeFeed implements DecodeFeed {
      * @param track
      */
     @Override
-    public void onStart(long sampleRate, long channels, String vendor, String title, String artist, String album, String date, String track)    
+    public void onStart(long sampleRate, long channels, String vendor, String title, String artist, String album, String date, String track)
  {
     	DecodeStreamInfo decodeStreamInfo = new DecodeStreamInfo(sampleRate, channels, vendor, title, artist, album, date, track);
      LogDebug.e(TAG, "onStart state:" + playerState.get());
@@ -433,7 +433,7 @@ public class ImplDecodeFeed implements DecodeFeed {
             return;
         }
        
-        if (playerState.get() == PlayerStates.READING_HEADER) {
+        if (playerState.get() == PlayerStates.READING_HEADER && audioTrack != null) {
             //We're ready to starting to read actual content
             playerState.set(PlayerStates.READY_TO_PLAY);
             events.sendEvent(PlayerEvents.READY_TO_PLAY, audioTrack.getAudioSessionId());

@@ -8,10 +8,6 @@
  */
 
 #include "OpusHeader.h"
-#include "../libvorbis-jni/org_xiph_vorbis_decoderjni_VorbisDecoder.h"
-#include "../libopus/include/opus.h"
-#include "../libogg/include/ogg/ogg.h"
-#include "../libopus/include/opus_header.h"
 
 /*
 // testing a very dirty fix for the Android 5.0 crash of opus player:

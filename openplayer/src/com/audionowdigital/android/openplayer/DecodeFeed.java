@@ -67,7 +67,7 @@ public interface DecodeFeed {
      * @param decodeStreamInfo the stream information of what's about to be played
      */
     public void onStart(long sampleRate, long channels, String vendorString, String titleString, String artistString, String albumString,
-    		String dateString, String trackString);    
+    		String dateString, String trackString);
 
     /**
      * Called to seek the stream to a position

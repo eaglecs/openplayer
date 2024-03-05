@@ -35,7 +35,7 @@ public class DataSource {
     /**
      * The debug tag
      */
-    private String TAG = "DataSource";
+    private String TAG = "duc_anh_DataSource";
 
     private final static int DATA_SRC_FINISHED = -2;
     private final static int DATA_SRC_INVALID = -1;
@@ -257,14 +257,15 @@ public class DataSource {
     }
 
 
-    public synchronized int read(byte buffer[], int byteOffset, int byteCount) {
+    public synchronized int read(byte[] buffer, int byteOffset, int byteCount) {
         try {
             if (dataSource != DATA_SRC_INVALID) {
                 // Reads up to byteCount bytes from this stream and stores them in the byte array buffer starting at byteOffset.
                 // Returns the number of bytes actually read or -1 if the end of the stream has been reached.
                 // if the stream is closed or another IOException occurs.
+                LogDebug.d("duc_anh_file_tts","Read buffer = " + buffer.length);
                 int bytes = inputStream.read(buffer, byteOffset, byteCount);
-                LogDebug.d("Stream size = ","" + bytes);
+                LogDebug.d("duc_anh_file_tts","Read inputStream size= " + bytes);
                 if (bytes > 0) readoffset += bytes;
                 //Log.d(TAG, "readoffset:" + readoffset)
                 if (bytes == -1)

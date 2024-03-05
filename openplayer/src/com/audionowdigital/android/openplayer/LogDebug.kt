@@ -14,6 +14,16 @@ object LogDebug {
     }
 
     @JvmStatic
+    fun stt(msg: String){
+//        if (BuildConfig.DEBUG){
+        Log.d("duc_anh_stt", msg)
+//        }
+//        else {
+//            Log.d("duc_anh", "$tag $msg" )
+//        }
+    }
+
+    @JvmStatic
     fun e(tag: String = "",msg: String){
 //        if (BuildConfig.DEBUG){
             Log.e("duc_anh_", "$tag $msg")

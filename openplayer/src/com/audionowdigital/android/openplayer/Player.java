@@ -32,11 +32,11 @@ public class Player implements Runnable {
 	};
 	
 	DecoderType type = DecoderType.UNKNOWN;
-	
+
     /**
      * Logging tag
      */
-    private static final String TAG = "Player";
+    private static final String TAG = "duc_anh_Player";
 
     /**
      * The decode feed to read and write pcm/encoded data respectively

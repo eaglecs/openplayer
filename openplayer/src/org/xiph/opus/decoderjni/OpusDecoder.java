@@ -20,9 +20,9 @@ public class OpusDecoder {
      * Load our -jni library and other dependent libraries
      */
     static {
-    	//Log.e("test", "1");
+//    	//Log.e("test", "1");
 //        System.loadLibrary("ogg");
-        //Log.e("test", "2");
+//        //Log.e("test", "2");
 //        System.loadLibrary("opus");
         //Log.e("test", "3");
         System.loadLibrary("opus-jni"); //dlopen failed: cannot locate symbol "opus_header_parse" referenced by "libopus-jni.so"...
