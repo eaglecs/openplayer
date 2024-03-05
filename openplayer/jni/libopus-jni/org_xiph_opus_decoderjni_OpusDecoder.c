@@ -19,7 +19,7 @@
 int debug = 0;
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-	LOGD(LOG_TAG, "onLoad called.");
+  LOGD(LOG_TAG, "onLoad called.");
 	return JNI_VERSION_1_6;
 }
 
@@ -42,7 +42,7 @@ JNIEXPORT int JNICALL Java_org_xiph_opus_decoderjni_OpusDecoder_readDecodeWriteL
 	//Create our write buffer
 	jshortArray jShortArrayWriteBuffer = (*env)->NewShortArray(env, BUFFER_LENGTH*2);
 
-	//-- get Java layer method pointer --//
+    //-- get Java layer method pointer --//
 	jclass javaDecodeFeedObjClass = (*env)->FindClass(env, "com/audionowdigital/android/openplayer/DecodeFeed");
 
 	// type signatures are presented here: http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/types.html
@@ -54,22 +54,22 @@ JNIEXPORT int JNICALL Java_org_xiph_opus_decoderjni_OpusDecoder_readDecodeWriteL
 	jmethodID startReadingHeaderMethodId = (*env)->GetMethodID(env, javaDecodeFeedObjClass, "onStartReadingHeader", "()V");
 	jmethodID stopMethodId = (*env)->GetMethodID(env, javaDecodeFeedObjClass, "onStop", "()V");
 	//--
-	ogg_int16_t convbuffer[BUFFER_LENGTH]; /* take 8k out of the data segment, not the stack */
-	int convsize=BUFFER_LENGTH;
+    ogg_int16_t convbuffer[BUFFER_LENGTH]; /* take 8k out of the data segment, not the stack */
+    int convsize=BUFFER_LENGTH;
+    
+    ogg_sync_state   oy; /* sync and verify incoming physical bitstream */
+    ogg_stream_state os; /* take physical pages, weld into a logical stream of packets */
+    ogg_page         og; /* one Ogg bitstream page. Opus packets are inside */
+    ogg_packet       op; /* one raw packet of data for decode */
+    
 
-	ogg_sync_state   oy; /* sync and verify incoming physical bitstream */
-	ogg_stream_state os; /* take physical pages, weld into a logical stream of packets */
-	ogg_page         og; /* one Ogg bitstream page. Opus packets are inside */
-	ogg_packet       op; /* one raw packet of data for decode */
+    char *buffer;
+    int  bytes;
 
-
-	char *buffer;
-	int  bytes;
-
-	/********** Decode setup ************/
+    /********** Decode setup ************/
 	/* 20ms at 48000, TODO 120ms */
-#define MAX_FRAME_SIZE      960
-#define OPUS_STACK_SIZE     31684 /**/
+	#define MAX_FRAME_SIZE      960
+	#define OPUS_STACK_SIZE     31684 /**/
 
 	/* global data */
 
@@ -95,56 +95,56 @@ JNIEXPORT int JNICALL Java_org_xiph_opus_decoderjni_OpusDecoder_readDecodeWriteL
 	char track[COMMENT_MAX_LEN] = {0};
 
 	//Notify the decode feed we are starting to initialize
-	onStartReadingHeader(env, &javaDecodeFeedObj, &startReadingHeaderMethodId);
+    onStartReadingHeader(env, &javaDecodeFeedObj, &startReadingHeaderMethodId);
 
-	//1
-	ogg_sync_init(&oy); /* Now we can read pages */
+    //1
+    ogg_sync_init(&oy); /* Now we can read pages */
 
-	int inited = 0, header = OPUS_HEADERS;
+    int inited = 0, header = OPUS_HEADERS;
 
-	int err = SUCCESS;
-	int i;
+    int err = SUCCESS;
+    int i;
 
-	// start source reading / decoding loop
-	while (1) {
-		if (err != SUCCESS) {
-			LOGE(LOG_TAG, "Global loop closing for error: %d", err);
-			break;
-		}
+    // start source reading / decoding loop
+    while (1) {
+    	if (err != SUCCESS) {
+    		LOGE(LOG_TAG, "Global loop closing for error: %d", err);
+    		break;
+    	}
 
-		// READ DATA : submit a 4k block to Ogg layer
-		buffer = ogg_sync_buffer(&oy,BUFFER_LENGTH);
-		bytes = onReadEncodedData(env, &javaDecodeFeedObj, &readOpusDataMethodId, buffer, &jByteArrayReadBuffer);
-		ogg_sync_wrote(&oy,bytes);
+        // READ DATA : submit a 4k block to Ogg layer
+        buffer = ogg_sync_buffer(&oy,BUFFER_LENGTH);
+        bytes = onReadEncodedData(env, &javaDecodeFeedObj, &readOpusDataMethodId, buffer, &jByteArrayReadBuffer);
+        ogg_sync_wrote(&oy,bytes);
 
-		// Check available data
+        // Check available data
 		LOGD(LOG_TAG, "bytes size =  %d", bytes);
-		if (bytes == 0) {
-			LOGW(LOG_TAG, "Data source finished.");
-			err = SUCCESS;
-			break;
-		}
+        if (bytes == 0) {
+        	LOGW(LOG_TAG, "Data source finished.");
+        	err = SUCCESS;
+        	break;
+        }
 
-		// loop pages
-		while (1) {
-			// exit loop on error
-			if (err != SUCCESS) {
+        // loop pages
+        while (1) {
+        	// exit loop on error
+        	if (err != SUCCESS) {
 				break;
 			}
-			// sync the stream and get a page
-			int result = ogg_sync_pageout(&oy,&og);
+        	// sync the stream and get a page
+        	int result = ogg_sync_pageout(&oy,&og);
 			LOGD(LOG_TAG, "sync the stream and get a page result(while 2) = %d", result);
-			// need more data, so go to PREVIOUS loop and read more */
-			if (result == 0){
+        	// need more data, so go to PREVIOUS loop and read more */
+        	if (result == 0){
 				LOGD(LOG_TAG, "need more data, so go to PREVIOUS loop and read more (while 2)");
 				break;
 			}
-			// missing or corrupt data at this page position
-			if (result < 0) {
-				LOGW(LOG_TAG, "Corrupt or missing data in bitstream; continuing..");
-				continue;
-			}
-			// we finally have a valid page
+           	// missing or corrupt data at this page position
+           	if (result < 0) {
+        		LOGW(LOG_TAG, "Corrupt or missing data in bitstream; continuing..");
+        		continue;
+           	}
+           	// we finally have a valid page
 			if (!inited) {
 				ogg_stream_init(&os, ogg_page_serialno(&og));
 				LOGE(LOG_TAG, "inited stream, serial no: %ld header_fill:%d", os.serialno, os.header_fill);
@@ -235,24 +235,24 @@ JNIEXPORT int JNICALL Java_org_xiph_opus_decoderjni_OpusDecoder_readDecodeWriteL
 //					break;
 //				}
 			}
-			// page if
-		} // while pages
+        	// page if
+        } // while pages
 
-	}
-
-
-
-	// ogg_page and ogg_packet structs always point to storage in libopus.  They're never freed or manipulated directly
+    }
 
 
-	// OK, clean up the framer
-	ogg_sync_clear(&oy);
 
-	onStop(env, &javaDecodeFeedObj, &stopMethodId);
+    // ogg_page and ogg_packet structs always point to storage in libopus.  They're never freed or manipulated directly
 
-	//Clean up our buffers
-	(*env)->DeleteLocalRef(env, jByteArrayReadBuffer);
-	(*env)->DeleteLocalRef(env, jShortArrayWriteBuffer);
 
-	return err;
+    // OK, clean up the framer
+    ogg_sync_clear(&oy);
+
+    onStop(env, &javaDecodeFeedObj, &stopMethodId);
+
+    //Clean up our buffers
+    (*env)->DeleteLocalRef(env, jByteArrayReadBuffer);
+    (*env)->DeleteLocalRef(env, jShortArrayWriteBuffer);
+
+    return err;
 }
