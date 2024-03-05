@@ -14,7 +14,7 @@
 #include <ogg/ogg.h>
 #include "Log.h"
 
-#define BUFFER_LENGTH 16384
+#define BUFFER_LENGTH 4096
 
 
 //Stops the vorbis data feed
