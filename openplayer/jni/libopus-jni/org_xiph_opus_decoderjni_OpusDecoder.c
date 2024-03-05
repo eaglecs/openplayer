@@ -209,17 +209,17 @@ JNIEXPORT int JNICALL Java_org_xiph_opus_decoderjni_OpusDecoder_readDecodeWriteL
 				// while packets
 
 				// check stream end
-				if (ogg_page_eos(&og)) {
-					LOGE(LOG_TAG, "Stream finished.");
-					// clean up this logical bitstream;
-					ogg_stream_clear(&os);
-
-					// attempt to go for re-initialization until EOF in data source
-					err = SUCCESS;
-
-					inited = 0;
-					break;
-				}
+//				if (ogg_page_eos(&og)) {
+//					LOGE(LOG_TAG, "Stream finished.");
+//					// clean up this logical bitstream;
+//					ogg_stream_clear(&os);
+//
+//					// attempt to go for re-initialization until EOF in data source
+//					err = SUCCESS;
+//
+//					inited = 0;
+//					break;
+//				}
 			}
         	// page if
         } // while pages

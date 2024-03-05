@@ -12,10 +12,11 @@ android {
         jvmTarget = '17'
     }
     namespace = "com.audio.now.digital.openplayerdemo"
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.audio.now.digital.openplayerdemo"
         minSdk 21
+        targetSdk = 34
     }
 
 //    sourceSets {
