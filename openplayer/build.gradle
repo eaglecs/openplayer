@@ -48,6 +48,7 @@ android {
 
     packagingOptions {
         pickFirst '**/*.so'
+        excludes += ["**/libc++_shared.so"]
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
