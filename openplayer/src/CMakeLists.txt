@@ -244,3 +244,6 @@ target_link_libraries( # Specifies the target library.
         opus-jni
 
         ${log-lib})
+
+set(CMAKE_SHARED_LINKER_FLAGS
+        "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,max-page-size=16384")

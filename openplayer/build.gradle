@@ -7,13 +7,19 @@ plugins {
 
 android {
     namespace 'com.audionowdigital.android.openplayer'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         minSdk 21
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
     }
 
     buildTypes {
@@ -25,6 +31,8 @@ android {
     externalNativeBuild {
         cmake {
             path "src/CMakeLists.txt"
+//            cppFlags ""
+//            arguments "-DANDROID_STL=c++_shared"
         }
     }
     sourceSets {
