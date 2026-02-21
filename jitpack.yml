@@ -4,5 +4,5 @@ jdk:
 before_install:
   - ./scripts/prepareJitpackEnvironment.sh
 install:
-  - FILE="-Dfile=open-player.aar"
+  - FILE="-Dfile=openplayer.aar"
   - mvn install:install-file $FILE -DgroupId=com.audionowdigital.android -DartifactId=openplayer -Dversion=2.0.0 -Dpackaging=aar -DgeneratePom=true

@@ -9,6 +9,31 @@
  * in the user guide at http://gradle.org/docs/1.12/userguide/multi_project_builds.html
  */
 
-include ':openplayer'
-//include ':OpenPlayer'
-include ':OpenPlayerDemo'
+//include ':openplayer'
+////include ':OpenPlayer'
+//include ':OpenPlayerDemo'
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+        maven { url = uri("https://www.jitpack.io") }
+    }
+}
+
+rootProject.name = "openplayer"
+include(":openplayer")
+include(":OpenPlayerDemo")
+
+
+

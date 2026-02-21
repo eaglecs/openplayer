@@ -6,6 +6,7 @@
  * Part of the OpenPlayer implementation for Alpine Audio Now Digital LLC
  */
 
+#include <string.h>
 #include "DecodeFeed.h"
 
 //Stops the vorbis data feed

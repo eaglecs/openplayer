@@ -1,29 +1,27 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
-
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
 
 android {
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-    namespace = "com.audio.now.digital.openplayerdemo"
+    namespace "com.audio.now.digital.openplayerdemo"
     compileSdk 36
+
     defaultConfig {
         applicationId "com.audio.now.digital.openplayerdemo"
         minSdk 21
-        targetSdk = 36
+        targetSdk 36
     }
 
-//    sourceSets {
-//        main {
-//            jniLibs.srcDirs = ['libs']
-//        }
-//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 
     signingConfigs {
         release {
@@ -36,25 +34,19 @@ android {
 
     buildTypes {
         debug {
-//            signingConfig signingConfigs.debug
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            resValue("string", "version_app", "Version ${versionNameValue}")
+            // cấu hình nếu cần
         }
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            resValue("string", "version_app", "Version ${versionNameValue}")
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 }
 
 dependencies {
-//    compile 'org.roboguice:roboguice:3.0.1'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation project(':openplayer')
-//    provided 'org.roboguice:roboblender:3.0.1'
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
@@ -63,7 +55,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
     implementation "io.reactivex.rxjava2:rxjava:2.2.10"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0"
-//    implementation "com.github.eaglecs:openplayer:1.1.2"
-    implementation "com.github.eaglecs:openplayer:2.1.15"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"
+
+    implementation "com.github.eaglecs:openplayer:2.1.16"
 }
