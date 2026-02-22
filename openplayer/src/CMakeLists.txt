@@ -247,3 +247,5 @@ target_link_libraries( # Specifies the target library.
 
 set(CMAKE_SHARED_LINKER_FLAGS
         "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,max-page-size=16384")
+set(CMAKE_ANDROID_STL_TYPE c++_static)
+
